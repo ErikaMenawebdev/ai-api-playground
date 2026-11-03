@@ -1,0 +1,22 @@
+# Dependencias
+
+node_modules/
+server/node_modules/
+
+# Variables de entorno
+
+.env
+.env.*
+!.env.example
+server/.env
+server/.env.*
+!server/.env.example
+
+# Archivos de depuración
+
+npm-debug.log*
+
+# Archivos del sistema
+
+.DS_Store
+Thumbs.db
