@@ -10,7 +10,7 @@ function createAiRouter(
   const router = express.Router();
 
 const MAX_PROMPT_LENGTH = 4000;
-const DEFAULT_MAX_OUTPUT_TOKENS = 300;
+const DEFAULT_MAX_OUTPUT_TOKENS = 500;
 const MAX_OUTPUT_TOKENS = 1000;
 
 router.post("/generate", async (req, res) => {

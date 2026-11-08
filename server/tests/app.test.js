@@ -69,33 +69,34 @@ test("GET /api/config devuelve la configuración", async () => {
   }
 });
 
-test("POST /api/demo devuelve un ejemplo preparado", async () => {
+
+test("POST /api/demo devuelve una respuesta simulada para un prompt libre", async () => {
   const previousValue = process.env.DEMO_ENABLED;
   process.env.DEMO_ENABLED = "true";
 
   const server = await createTestServer();
 
   try {
-    const response = await fetch(
-      `${server.baseUrl}/api/demo`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          exampleId: "what-is-an-ai-api"
-        })
-      }
-    );
+    const response = await fetch(`${server.baseUrl}/api/demo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        prompt: "Explícame qué es una API de inteligencia artificial"
+      })
+    });
 
     const body = await response.json();
 
     assert.equal(response.status, 200);
     assert.equal(body.success, true);
     assert.equal(body.mode, "demo");
-    assert.equal(body.source, "prepared_example");
+    assert.equal(body.source, "simulated_response");
     assert.equal(typeof body.answer, "string");
+    assert.ok(body.answer.length > 0);
+    assert.equal(body.model, "Demo Model");
+    assert.equal(body.latencyMs, 0);
   } finally {
     await server.close();
 
@@ -107,34 +108,26 @@ test("POST /api/demo devuelve un ejemplo preparado", async () => {
   }
 });
 
-test("POST /api/demo devuelve 404 si el ejemplo no existe", async () => {
+test("POST /api/demo devuelve 400 cuando no se envía un prompt", async () => {
   const previousValue = process.env.DEMO_ENABLED;
   process.env.DEMO_ENABLED = "true";
 
   const server = await createTestServer();
 
   try {
-    const response = await fetch(
-      `${server.baseUrl}/api/demo`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          exampleId: "example-does-not-exist"
-        })
-      }
-    );
+    const response = await fetch(`${server.baseUrl}/api/demo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({})
+    });
 
     const body = await response.json();
 
-    assert.equal(response.status, 404);
+    assert.equal(response.status, 400);
     assert.equal(body.success, false);
-    assert.equal(
-      body.error.code,
-      "EXAMPLE_NOT_FOUND"
-    );
+    assert.equal(body.error.code, "INVALID_PROMPT");
   } finally {
     await server.close();
 
@@ -145,6 +138,7 @@ test("POST /api/demo devuelve 404 si el ejemplo no existe", async () => {
     }
   }
 });
+
 
 test("devuelve una respuesta JSON cuando la ruta no existe", async () => {
   const server = await createTestServer();
