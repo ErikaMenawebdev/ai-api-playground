@@ -11,6 +11,8 @@ import History from "./components/History";
 import Documentation from "./components/Documentation";
 
 const getTimestamp = () => performance.now();
+const API_URL =
+      import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
 function App() {
 // Estados principales de la aplicación
@@ -20,6 +22,7 @@ const [response, setResponse] = useState("");
 const [loading, setLoading] = useState(false);
 const [error, setError] = useState("");
 const [activePage, setActivePage] = useState("playground");
+
 // Estado de conexión con el backend
 const [connectionStatus, setConnectionStatus] = useState("checking");
 // Verificar conexión con el backend
@@ -30,8 +33,8 @@ useEffect(() => {
   const checkBackendConnection = async () => {
 
     try {
-      const response = await fetch("http://localhost:3000/api/health");
-
+      const response = await fetch(`${API_URL}/health`);
+     
       if (!response.ok) {
         throw new Error("Backend unavailable");
       }
