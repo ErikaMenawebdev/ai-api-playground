@@ -1,7 +1,10 @@
 const app = require("./app");
 
 const PORT = process.env.PORT || 3000;
+const HOST = "0.0.0.0";
 
-app.listen(PORT, () => {
-  console.log(`AI API Playground ejecutándose en el puerto ${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(
+    `AI API Playground ejecutándose en http://${HOST}:${PORT}`
+  );
 });
