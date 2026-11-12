@@ -1139,3 +1139,35 @@ margin: 22px 0;
 .connection-status .status-dot.checking {
   background: #f59e0b;
 }
+
+@media (max-width: 480px) {
+  .editor-heading {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .editor-heading > div {
+    width: 100%;
+  }
+
+  .editor-badge {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-header {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .header-title {
+    width: 100%;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
